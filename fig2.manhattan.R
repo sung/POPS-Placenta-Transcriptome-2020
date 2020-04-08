@@ -119,7 +119,7 @@ print(p.chr1)
 ###########################
 # combine A,B,C,D,E above #
 ###########################
-file.name<-file.path("figures/Fig2.manhattan.tiff")
+file.name<-file.path("Figures/Fig2.manhattan.tiff")
 tiff(filename=file.name,width=10, height=14,units="in",res=300, compression = 'lzw')
 cowplot::plot_grid(p.all, p.chr19, p.chrMT, p.chr14, p.chr1, 
                    labels="auto",label_size=20,ncol=1, align="v", 

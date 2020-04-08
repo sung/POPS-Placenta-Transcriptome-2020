@@ -214,7 +214,8 @@ p.f<-ggplot(dt.foo,aes(Tissue,V3,fill=Source)) +
 #############################
 # A4: 8.27 × 11.69 inches   #
 # combine all figures above #
-file.name<-file.path("figures/Fig1.transcript.pie.abundance.complexity.tiff")
+#############################
+file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.tiff")
 cp.all.pie<-cowplot::plot_grid(p.pie.total, p.pie.small, labels="auto",label_size=25,nrow=1)
 cp.all.top<-cowplot::plot_grid(p.a, p.b, p.c, labels=c("c","d","e"), label_size=25, align="h", nrow=1)
 cp.all.bottom<-cowplot::plot_grid(p.d, p.f, labels=c("f","g"), label_size=25, align="h", nrow=1)
