@@ -1,5 +1,5 @@
 ## Introduction
-This is a collection of custom scripts used for Gong et al. 2020. A Shiny app to browse the placenta transcriptome is also avaible [here](https://www.obgyn.cam.ac.uk/placentome/) and the source code is [here](https://github.com/sung/ShinyPlacentome).
+This is a collection of custom scripts used for Gong *et al.* 2020. A [Shiny app](https://www.obgyn.cam.ac.uk/placentome) to browse the placenta transcriptome is also avaible and the source code is [here](https://github.com/sung/ShinyPlacentome).
 
 ## Initial mapping of RNA-Seq data
 The RNA-Seq reads were trimmed (using [cutadapt](https://github.com/marcelm/cutadapt) and [Trim Galore!](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)) and mapped to the primary chromosomal assemblies of the [GRCh38.p3 version](https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.29/) of the human reference genome using [TopHat2](https://github.com/infphilo/tophat), a splice-aware mapper built on top of [Bowtie2](https://github.com/BenLangmead/bowtie2) short-read aligner. For more details, read [Gong et al., Epigenetics, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5989156/) and [Gong et al., JCI Insight, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6124516/).
