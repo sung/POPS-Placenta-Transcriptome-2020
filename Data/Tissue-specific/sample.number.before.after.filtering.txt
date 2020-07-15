@@ -1,0 +1,55 @@
+SMTSD,SMTS,N.x,N.y
+Adipose - Subcutaneous,Adipose Tissue,663,541
+Adipose - Visceral (Omentum),Adipose Tissue,541,469
+Adrenal Gland,Adrenal Gland,258,226
+Artery - Aorta,Blood Vessel,432,349
+Artery - Coronary,Blood Vessel,240,189
+Artery - Tibial,Blood Vessel,663,554
+Bladder,Bladder,21,12
+Brain - Amygdala,Brain,152,113
+Brain - Anterior cingulate cortex (BA24),Brain,176,140
+Brain - Caudate (basal ganglia),Brain,246,213
+Brain - Cerebellar Hemisphere,Brain,215,108
+Brain - Cerebellum,Brain,241,23
+Brain - Cortex,Brain,255,207
+Brain - Frontal Cortex (BA9),Brain,209,179
+Brain - Hippocampus,Brain,197,150
+Brain - Hypothalamus,Brain,202,164
+Brain - Nucleus accumbens (basal ganglia),Brain,246,210
+Brain - Putamen (basal ganglia),Brain,205,168
+Brain - Spinal cord (cervical c-1),Brain,159,141
+Brain - Substantia nigra,Brain,139,101
+Breast - Mammary Tissue,Breast,459,312
+Cells - Cultured fibroblasts,Skin,504,498
+Cells - EBV-transformed lymphocytes,Blood,174,168
+Cervix - Ectocervix,Cervix Uteri,9,6
+Cervix - Endocervix,Cervix Uteri,10,6
+Colon - Sigmoid,Colon,373,305
+Colon - Transverse,Colon,406,342
+Esophagus - Gastroesophageal Junction,Esophagus,375,320
+Esophagus - Mucosa,Esophagus,555,494
+Esophagus - Muscularis,Esophagus,515,448
+Fallopian Tube,Fallopian Tube,9,5
+Heart - Atrial Appendage,Heart,429,397
+Heart - Left Ventricle,Heart,432,336
+Kidney - Cortex,Kidney,85,50
+Kidney - Medulla,Kidney,4,
+Liver,Liver,226,189
+Lung,Lung,578,361
+Minor Salivary Gland,Salivary Gland,162,151
+Muscle - Skeletal,Muscle,803,736
+Nerve - Tibial,Nerve,619,257
+Ovary,Ovary,180,83
+Pancreas,Pancreas,328,289
+Pituitary,Pituitary,283,152
+Prostate,Prostate,245,134
+Skin - Not Sun Exposed (Suprapubic),Skin,604,483
+Skin - Sun Exposed (Lower leg),Skin,701,586
+Small Intestine - Terminal Ileum,Small Intestine,187,146
+Spleen,Spleen,241,150
+Stomach,Stomach,359,307
+Testis,Testis,361,38
+Thyroid,Thyroid,653,300
+Uterus,Uterus,142,94
+Vagina,Vagina,156,98
+Whole Blood,Blood,755,601

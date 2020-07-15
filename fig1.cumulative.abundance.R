@@ -1,7 +1,7 @@
 source("lib/local.R")
 load("RData/dl.deseq.RData") # 12M (dl.deseq.anno, dl.abundance, dl.cum.fpkm)
 load("RData/dl.gtex.deseq.RData") # 66M
-load("RData/dt.mapped.smallRNA.RData") # 71M 
+load("RData/dt.mapped.smallRNA.RData") # 80M 
 
 ############################################
 ## Pie chart: a) totla-RNA, b) small-RNA   #
@@ -54,18 +54,40 @@ p.pie.total<-ggplot(dt.total, aes(x=2, y=percentage, fill=`RNA type`)) +
 ##############
 ## Small-RNA #
 ##############
-dt.small<-rbind(
+dt.mapped.smallRNA[,.(count=sum(depth))]
+print(dt.small.v1<-rbind(
     dt.mapped.miRNA[,.(`RNA type`="miRNA",count=sum(depth))],
     dt.mapped.piRNA[,.(`RNA type`="piRNA",count=sum(depth))],
     dt.mapped.exon[,.(`RNA type`="other exonic",count=sum(depth))],
     #dt.unmapped.smallRNA[,.(`RNA type`="remaining",count=sum(depth))]
     data.table(`RNA type`="remaining",count=dt.unmapped.smallRNA.miR.piR[,sum(depth)] - dt.mapped.exon[,sum(depth)])
-    )
+    ))
+dt.small.v1[,sum(count)]
+
+print(dt.small.v2<-rbind(
+    dt.mapped.miRNA[,.(`RNA type`="miRNA",count=sum(depth))],
+    dt.mapped.piRNA[,.(`RNA type`="piRNA",count=sum(depth))],
+    dt.mapped.tRNA[,.(`RNA type`="tRNA",count=sum(depth))],
+    dt.mapped.sncRNA[,.(`RNA type`="sncRNA",count=sum(depth))],
+    dt.mapped.exon.rev1[,.(`RNA type`="other exonic",count=sum(depth))],
+    data.table(`RNA type`="remaining",count=dt.unmapped.smallRNA.miR.piR[,sum(depth)] - dt.mapped.tRNA[,sum(depth)] - dt.mapped.sncRNA[,sum(depth)] - dt.mapped.exon.rev1[,sum(depth)])
+    ))
+dt.small.v2[,sum(count)]
+
+print(dt.small<-rbind(
+    dt.mapped.miRNA[,.(`RNA type`="miRNA",count=sum(depth))],
+    dt.mapped.piRNA[,.(`RNA type`="piRNA",count=sum(depth))],
+    dt.mapped.tRNA[,.(`RNA type`="tRNA",count=sum(depth))],
+    dt.mapped.sncRNA[,.(`RNA type`="sncRNA",count=sum(depth))],
+    dt.mapped.exon.rev1[,.(`RNA type`="other exonic",count=sum(depth))],
+    data.table(`RNA type`="remaining",count=dt.mapped.smallRNA[,sum(depth)]- dt.mapped.miRNA[,sum(depth)] - dt.mapped.piRNA[,sum(depth)] - dt.mapped.tRNA[,sum(depth)] - dt.mapped.sncRNA[,sum(depth)] - dt.mapped.exon.rev1[,sum(depth)])
+    ))
+dt.small[,sum(count)]
 
 sumS<-dt.small[,sum(count)]
 dt.small[,`percentage`:=round(count/sumS*100,1)]
 
-my.levels<-c("miRNA","piRNA","other exonic","remaining")
+my.levels<-c("miRNA","piRNA","sncRNA","tRNA","other exonic","remaining")
 dt.small<-rbindlist(lapply(rev(my.levels), function(i) dt.small[`RNA type`==i]))
 dt.small$`RNA type`<-factor(dt.small$`RNA type`, levels=my.levels)
 dt.small
@@ -86,7 +108,8 @@ p.pie.small<-ggplot(dt.small, aes(x=2, y=percentage, fill=`RNA type`)) +
                                 size=6, nudge_x = .4, segment.size = .4, show.legend = T, segment.color = "grey10") +
     labs(x = NULL, y = NULL, fill = NULL) +
     annotate("text", x=.5,y = 85, label = "Small RNA-Seq",size=8) +
-    scale_fill_manual(values=c(cbPalette[4],cbPalette[5],cbPalette[1],"grey80")) +
+    #scale_fill_manual(values=c(cbPalette[4],cbPalette[5],cbPalette[1],"grey80")) +
+    scale_fill_manual(values=c(cbPalette[4],cbPalette[5],cbPalette[7],cbPalette[6],cbPalette[1],"grey80")) +
     theme_void() +
     theme(legend.position="")
 

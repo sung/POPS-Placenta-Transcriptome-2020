@@ -1,0 +1,15 @@
+SampleName,CntFile,Condition
+RHM063,data/placenta.T1.pA/SLX-SP-T1.RHM063.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM064,data/placenta.T1.pA/SLX-SP-T1.RHM064.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM065,data/placenta.T1.pA/SLX-SP-T1.RHM065.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM066,data/placenta.T1.pA/SLX-SP-T1.RHM066.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM067,data/placenta.T1.pA/SLX-SP-T1.RHM067.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM068,data/placenta.T1.pA/SLX-SP-T1.RHM068.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM069,data/placenta.T1.pA/SLX-SP-T1.RHM069.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM070,data/placenta.T1.pA/SLX-SP-T1.RHM070.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,8wk
+RHM071,data/placenta.T1.pA/SLX-SP-T1.RHM071.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,14wk
+RHM072,data/placenta.T1.pA/SLX-SP-T1.RHM072.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,14wk
+RHM073,data/placenta.T1.pA/SLX-SP-T1.RHM073.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,14wk
+RHM074,data/placenta.T1.pA/SLX-SP-T1.RHM074.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,14wk
+RHM075,data/placenta.T1.pA/SLX-SP-T1.RHM075.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,14wk
+RHM076,data/placenta.T1.pA/SLX-SP-T1.RHM076.featureCount.GRCh38.88.collapsed.from.gencode.v26.clean.txt.gz,14wk
