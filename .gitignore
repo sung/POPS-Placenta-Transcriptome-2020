@@ -1,9 +1,8 @@
 *.swp
 .RData
 .Rhistory
-Data/Homo_sapiens.GRCh38.88.collapsed.from.gencode.v26.gtf
 Data/GTEx.v8.p2/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct.gz
+Data/Homo_sapiens.GRCh38.88.collapsed.from.gencode.v26.gtf
 RData/v8.p2.dds.RData
 RData/v8.p2.mat.cnt.RData
-RData/dt.mapped.smallRNA.RData
 .DS_Store
