@@ -1,6 +1,6 @@
 source("lib/local.R")
 load("RData/dl.deseq.RData") # 12M (dl.deseq.anno, dl.abundance, dl.cum.fpkm)
-load("RData/dl.gtex.deseq.RData") # 66M
+#load("RData/dl.gtex.deseq.RData") # 66M # TODO:  <30-09-20, Sung> # error while loading - rebuild
 load("RData/dt.mapped.smallRNA.RData") # 80M 
 
 ############################################
@@ -49,7 +49,8 @@ p.pie.total<-ggplot(dt.total, aes(x=2, y=percentage, fill=`RNA type`)) +
     annotate("text", x=.5,y = 85, label = "Total RNA-Seq",size=8) +
     scale_fill_manual(values=c(cbPalette2[1:3],"grey30","grey50","grey70")) +
     theme_void() +
-    theme(legend.position="")
+    #theme(legend.position="")
+    theme(legend.position="", plot.margin = unit(c(.5,0,-1.7,0), "cm"))
 
 ##############
 ## Small-RNA #
@@ -109,9 +110,9 @@ p.pie.small<-ggplot(dt.small, aes(x=2, y=percentage, fill=`RNA type`)) +
     labs(x = NULL, y = NULL, fill = NULL) +
     annotate("text", x=.5,y = 85, label = "Small RNA-Seq",size=8) +
     #scale_fill_manual(values=c(cbPalette[4],cbPalette[5],cbPalette[1],"grey80")) +
-    scale_fill_manual(values=c(cbPalette[4],cbPalette[5],cbPalette[7],cbPalette[6],cbPalette[1],"grey80")) +
+    scale_fill_manual(values=c(cbPalette[4],cbPalette[5],cbPalette[6],cbPalette[7],cbPalette[1],"grey80")) +
     theme_void() +
-    theme(legend.position="")
+    theme(legend.position="", plot.margin = unit(c(.5,0,-1.7,0), "cm"))
 
 ##################################
 ## Figure: Transcript abundance ##
@@ -119,22 +120,22 @@ p.pie.small<-ggplot(dt.small, aes(x=2, y=percentage, fill=`RNA type`)) +
 dl.abundance<-lapply(dl.abundance, function(i) i[,meanTPM:=meanFpkm/sum(meanFpkm)*10^6]) # add TPM
 dt.abundance<-rbindlist(dl.abundance) # dl.abundance[-1]: "pre-miRNA"
 dt.abundance[`RNA Type`=="protein_coding",`RNA Type`:="mRNA"]
-dt.abundance$`RNA Type`<-factor(dt.abundance$`RNA Type`, levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","pre-miRNA","piRNA-miRNA"))
+dt.abundance$`RNA Type`<-factor(dt.abundance$`RNA Type`, levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","sncRNA","pre-miRNA","piRNA-miRNA"))
 
-fpkm.cutoff<-c(0, 10^-1, 10^0, 10^1, 10^2, 10^3, 10^4, 10^5, 10^6)
+fpkm.cutoff<-c(0,10^-3, 10^-2 ,10^-1, 10^0, 10^1, 10^2, 10^3, 10^4, 10^5, 10^6)
 dl.abundance.summary<-list()
 for(i in names(dl.abundance)){
     dl.abundance.summary[[i]]<-data.table(`RNA Type`=i,
                                 fpkm.cutoff,
-                                `Count.FPKM`=sapply(fpkm.cutoff, function(j) dl.abundance[[i]][meanFpkm>=j,.N]),
-                                `Count.TPM`=sapply(fpkm.cutoff, function(j) dl.abundance[[i]][meanTPM>=j,.N]),
+                                `Count.FPKM`=sapply(fpkm.cutoff, function(j) dl.abundance[[i]][meanFpkm<=j,.N]), # max this level
+                                `Count.TPM`=sapply(fpkm.cutoff, function(j) dl.abundance[[i]][meanTPM<=j,.N]), # max this level
                                 `Total`=dl.abundance[[i]][,.N]
                         )
 }
 dt.abundance.summary<-rbindlist(dl.abundance.summary)
 dt.abundance.summary[`RNA Type`=="protein_coding",`RNA Type`:="mRNA"]
 #dt.abundance.summary$`RNA Type`<-factor(dt.abundance.summary$`RNA Type`, levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","pre-miRNA"))
-dt.abundance.summary$`RNA Type`<-factor(dt.abundance.summary$`RNA Type`, levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","pre-miRNA","piRNA-miRNA"))
+dt.abundance.summary$`RNA Type`<-factor(dt.abundance.summary$`RNA Type`, levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","sncRNA","pre-miRNA","piRNA-miRNA"))
 
 # Figure 1. Transcript Abundance
 p.a<-ggplot(dt.abundance.summary[`RNA Type`!="pre-miRNA"], aes(fpkm.cutoff+0.0001, Count.FPKM/Total*100)) +
@@ -144,10 +145,10 @@ p.a<-ggplot(dt.abundance.summary[`RNA Type`!="pre-miRNA"], aes(fpkm.cutoff+0.000
                         breaks = trans_breaks("log10", function(x) 10^x),
                         labels = trans_format("log10", math_format(10^.x))) +
     scale_color_manual(values=cbPalette2) +
-    xlab("Minimum abundance level (FPKM)") + 
+    xlab("Maximum abundance level (FPKM)") + 
     ylab("Percentage of transcripts (%)") + 
     theme_Publication() +
-    theme(legend.position=c(0.8,0.75), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7)))
+    theme(legend.position=c(0.8,0.25), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7)))
 
 p.b<-ggplot(dt.abundance[`RNA Type`!="pre-miRNA"], aes(meanFpkm+0.0001)) +
     geom_line(aes(col=`RNA Type`),stat="density", size=2.7, alpha=.85) +
@@ -166,7 +167,7 @@ p.b<-ggplot(dt.abundance[`RNA Type`!="pre-miRNA"], aes(meanFpkm+0.0001)) +
 dt.cum.fpkm<-rbindlist(dl.cum.fpkm) # FPKM>0.1 only
 dt.cum.fpkm[,`:=`(INDEX=seq_len(.N),COUNT=.N,INDEX_PCT=(seq_len(.N)/.N)*100),`RNA Type`] # index 
 dt.cum.fpkm[`RNA Type`=="protein_coding",`RNA Type`:="mRNA"]
-dt.cum.fpkm$`RNA Type`=factor(dt.cum.fpkm$`RNA Type`,levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","pre-miRNA"))
+dt.cum.fpkm$`RNA Type`=factor(dt.cum.fpkm$`RNA Type`,levels=c("mRNA","lincRNA","pseudogene","miRNA","piRNA","sncRNA","pre-miRNA"))
 dt.cum.fpkm[,.(.N,max(COUNT)),`RNA Type`]
 
 p.c<-ggplot(dt.cum.fpkm[`RNA Type`!="pre-miRNA"], aes(index.pct,cumsum.fpkm.pct,group=`RNA Type`)) +
@@ -184,65 +185,77 @@ p.c<-ggplot(dt.cum.fpkm[`RNA Type`!="pre-miRNA"], aes(index.pct,cumsum.fpkm.pct,
 ###########################
 ## comparision with GTEx ##
 ###########################
-my.tissue<-c("Blood","Pancreas","Liver","Muscle","Pituitary","Brain","Placenta")
-dt.gtex.deseq<-rbindlist(dl.gtex.deseq)
+if(my.gtex.ver=="v8.p2"){
+    load("RData/v8.p2.dt.tpm.tau.RData")
+    dt.tpm.tau
+    colnames(dt.tpm.tau)
+    dt.cum.fpkm.gtex<-melt.data.table(dt.tpm.tau[gene_biotype=="protein_coding" & !chromosome_name %in% c("MT","Y"),c(2,3,6:56)],
+                    id.vars=c("ensembl_gene_id","hgnc_symbol"),variable.name="Tissue",value="meanFpkm")[Tissue!="Placenta.T3.pA"][order(Tissue,-meanFpkm)][,cumsum.fpkm:=cumsum(meanFpkm),Tissue] # meanFPKM is actuall TPM 
+    dt.cum.fpkm.gtex[Tissue=="Placenta.T3.rZ",Tissue:="Placenta"]
+    dt.cum.fpkm.gtex[,.N,Tissue] # n=19,115 gene across 50 tissues
+    dt.cum.fpkm.gtex$Tissue<-as.character(dt.cum.fpkm.gtex$Tissue)
 
-# common ensembl_gene_id across 21 tissues (including placenta)
-my.ensg<-dt.gtex.deseq[!chromosome_name %in% c("MT","Y") & gene_biotype=="protein_coding",.N,ensembl_gene_id][N==21,ensembl_gene_id] 
-#length(my.ensg) # n=19751 genes (-MT, -Y) common across 21 tissues
+}else{
+    # v6.p
+    my.tissue<-c("Blood","Pancreas","Liver","Muscle","Pituitary","Brain","Placenta")
+    dt.gtex.deseq<-rbindlist(dl.gtex.deseq)
 
-dt.cum.fpkm.gtex<-dt.gtex.deseq[meanFpkm>0.1 & ensembl_gene_id %in% my.ensg, 
-                            .(chromosome_name,ensembl_gene_id,hgnc_symbol,gene_biotype,meanFpkm,Tissue)][order(Tissue,-meanFpkm)][,cumsum.fpkm:=cumsum(meanFpkm),Tissue]
-dt.cum.fpkm.gtex[,`:=`(cumsum.fpkm.pct=cumsum.fpkm/sum(meanFpkm)*100),Tissue] # index 
-dt.cum.fpkm.gtex[,`:=`(INDEX=seq_len(.N),COUNT=.N,INDEX_PCT=(seq_len(.N)/.N)*100),Tissue] # index 
-dt.cum.fpkm.gtex[,`Source`:=ifelse(Tissue=='Placenta',"POP Study","GTEx")]
-dt.cum.fpkm.gtex[,Tissues:=ifelse(Tissue %in% my.tissue, Tissue, "Other somatic")]
-dt.cum.fpkm.gtex$Tissues<-factor(dt.cum.fpkm.gtex$Tissues, levels=c(my.tissue,"Other somatic"))
+    # common ensembl_gene_id across 21 tissues (including placenta)
+    my.ensg<-dt.gtex.deseq[!chromosome_name %in% c("MT","Y") & gene_biotype=="protein_coding",.N,ensembl_gene_id][N==21,ensembl_gene_id] 
+    #length(my.ensg) # n=19,751 genes (-MT, -Y) common across 21 tissues
 
-p.d<-ggplot(dt.cum.fpkm.gtex, aes(INDEX_PCT,cumsum.fpkm.pct)) +
-    geom_point(aes(col=Tissues),size=2.5,alpha=.7) +
-    geom_line(data=dt.cum.fpkm.gtex[Tissue %in% my.tissue],aes(col=Tissues),size=1,alpha=.7) +
-    geom_hline(yintercept=50,linetype="longdash",size=1.1,alpha=.8) +
-    scale_x_continuous(trans = log10_trans(),
-                        breaks = trans_breaks("log10", function(x) 10^x),
-                        labels = trans_format("log10", math_format(10^.x))) +
-    xlab("Percentage of protein coding transcripts (%)") + 
-    ylab("Sum of transcript abundance (%)") +
-    theme_Publication() +
-    theme(legend.position=c(0.85,0.32), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7))) +
-    scale_color_manual(values=c(ggsci::pal_nejm()(5),"#FFDC91FF", "black", "darkgrey"))
+    dt.cum.fpkm.gtex<-dt.gtex.deseq[meanFpkm>0.1 & ensembl_gene_id %in% my.ensg, 
+                                .(chromosome_name,ensembl_gene_id,hgnc_symbol,gene_biotype,meanFpkm,Tissue)][order(Tissue,-meanFpkm)][,cumsum.fpkm:=cumsum(meanFpkm),Tissue]
+}
 
-p.e<-ggplot(dt.cum.fpkm.gtex[INDEX_PCT<1], aes(INDEX_PCT,cumsum.fpkm.pct)) +
-    geom_point(aes(col=Tissues),size=2.5,alpha=.7) +
-    geom_line(data=dt.cum.fpkm.gtex[INDEX_PCT<1 & Tissue %in% my.tissue],aes(col=Tissues),size=1,alpha=.7) +
-    scale_x_continuous(trans = log10_trans(),
-                        breaks = trans_breaks("log10", function(x) 10^x),
-                        labels = trans_format("log10", math_format(10^.x))) +
-    xlab("Percentage of transcripts (%)") + 
-    ylab("Sum of transcript abundance (%)") +
-    theme_Publication() +
-    theme(legend.position="none") +
-    scale_color_manual(values=c(ggsci::pal_nejm()(5),"#FFDC91FF", "black", "darkgrey"))
+    dt.cum.fpkm.gtex[,`:=`(cumsum.fpkm.pct=cumsum.fpkm/sum(meanFpkm)*100),Tissue] # index 
+    dt.cum.fpkm.gtex[,`:=`(INDEX=seq_len(.N),COUNT=.N,INDEX_PCT=(seq_len(.N)/.N)*100),Tissue] # index 
+    dt.cum.fpkm.gtex[,`Source`:=ifelse(Tissue=='Placenta',"POP Study","GTEx")]
 
-dt.foo<-dt.cum.fpkm.gtex[INDEX_PCT<1,.(.N,max(cumsum.fpkm), max(cumsum.fpkm.pct)),.(Tissue,Source)][order(-V3)]
-p.f<-ggplot(dt.foo,aes(Tissue,V3,fill=Source)) +
-    geom_bar(stat="identity",alpha=.8) +
-    scale_x_discrete(limits=dt.foo$Tissue, labels=gsub("_"," ",dt.foo$Tissue)) +
-    scale_fill_manual(name="Sources",values=c(cbPalette[1],cbPalette2[1])) +
-    xlab("Tissues") +
-    ylab("Sum of transcript abundance (%)") +
-    theme_Publication() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size=rel(.9)), legend.position=c(0.75,0.85), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7)))
+    # GTEx TA50
+    print(dt.ta50<-dt.cum.fpkm.gtex[cumsum.fpkm.pct>50,.(min(INDEX),min(COUNT),min(INDEX_PCT),min(cumsum.fpkm.pct)),Tissue][order(V1)]) 
+    print(top.tissues<-c(as.character(dt.ta50[V1<=dt.ta50[Tissue=="Placenta"]$V1]$Tissue)))
+    print(bottom.tissues<-c(dt.ta50[.N-1]$Tissue,dt.ta50[.N]$Tissue))
+    print(my.tissue<-c(top.tissues,bottom.tissues))
 
+    dt.cum.fpkm.gtex[,Tissues:=ifelse(Tissue %in% my.tissue, Tissue, "Other somatic")]
+    dt.cum.fpkm.gtex$Tissues<-factor(dt.cum.fpkm.gtex$Tissues, levels=c(top.tissues,"Other somatic",bottom.tissues))
+    dt.cum.fpkm.gtex[,.N,Tissues]
+    dt.cum.fpkm.gtex[INDEX==1,1:6][order(cumsum.fpkm.pct)]
+
+    p.d<-ggplot(dt.cum.fpkm.gtex, aes(INDEX_PCT,cumsum.fpkm.pct)) +
+        geom_point(aes(col=Tissues),size=2.5,alpha=.7) +
+        geom_line(data=dt.cum.fpkm.gtex[Tissue %in% my.tissue],aes(col=Tissues),size=1,alpha=.7) +
+        geom_hline(yintercept=50,linetype="longdash",size=1.1,alpha=.8) +
+        scale_x_continuous(trans = log10_trans(),
+                            breaks = trans_breaks("log10", function(x) 10^x),
+                            labels = trans_format("log10", math_format(10^.x))) +
+        xlab("Percentage of protein coding transcripts (%)") + 
+        ylab("Sum of transcript abundance (%)") +
+        theme_Publication() +
+        theme(legend.position=c(0.84,0.22), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7))) +
+        scale_color_manual(values=c(ggsci::pal_nejm()(6),"black","darkgrey","#FFDC91FF", "#cc8b00"))
+
+    dt.foo<-dt.cum.fpkm.gtex[INDEX_PCT<1,.(.N,max(cumsum.fpkm), max(cumsum.fpkm.pct)),.(Tissue,Source)][order(-V3)]
+    p.f<-ggplot(dt.foo,aes(Tissue,V3,fill=Source)) +
+        geom_bar(stat="identity",alpha=.8) +
+        scale_x_discrete(limits=dt.foo$Tissue, labels=gsub("_"," ",dt.foo$Tissue)) +
+        scale_fill_manual(name="Sources",values=c(cbPalette[1],cbPalette2[1])) +
+        xlab("") +
+        ylab("Sum of transcript abundance (%)") +
+        coord_flip() +
+        theme_Publication() +
+        #theme(axis.text.x = element_text(angle = 45, hjust = 1, size=rel(.7)), legend.position=c(0.75,0.85), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7)))
+        theme(axis.text.y = element_text(size=rel(.75)), legend.position=c(0.75,0.85), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7)))
 #############################
 # A4: 8.27 × 11.69 inches   #
 # combine all figures above #
 #############################
-file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.tiff")
+file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.rev1.tiff")
 cp.all.pie<-cowplot::plot_grid(p.pie.total, p.pie.small, labels="auto",label_size=25,nrow=1)
 cp.all.top<-cowplot::plot_grid(p.a, p.b, p.c, labels=c("c","d","e"), label_size=25, align="h", nrow=1)
-cp.all.bottom<-cowplot::plot_grid(p.d, p.f, labels=c("f","g"), label_size=25, align="h", nrow=1)
-cp.all<-cowplot::plot_grid(cp.all.pie, cp.all.top, cp.all.bottom, nrow=3)
-tiff(file.name, width=16, height=20,units="in",res=300, compression = 'lzw') #A4 size
+cp.all.bottom<-cowplot::plot_grid(p.d, p.f, labels=c("f","g"),rel_widths=c(1.2,1), label_size=25, align="h", nrow=1)
+cp.all<-cowplot::plot_grid(cp.all.pie, cp.all.top, cp.all.bottom, rel_heights=c(1.1,1,1.4),nrow=3)
+tiff(file.name, width=16, height=21,units="in",res=300, compression = 'lzw') #A4 size
 print(cp.all)
 dev.off()
