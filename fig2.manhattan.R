@@ -237,3 +237,4 @@ cowplot::plot_grid(p.all, p.c19mc, p.c14mc, p.chrMT,
                    labels="auto",label_size=20,ncol=1, align="v", 
                    rel_heights=c(3.5,1,3,1))
 dev.off()
+
