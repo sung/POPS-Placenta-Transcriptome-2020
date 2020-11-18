@@ -27,7 +27,7 @@ pm.a<-pheatmap::pheatmap(mat.top.pt.a, cluster_rows=F, cluster_cols=T, fontsize_
 #########################################################
 dt.pt.specific[['lincRNA']]<-li.enriched[["Placenta.T3.rZ"]][gene_biotype=="lincRNA",-"Placenta.T3.pA"][order(-Placenta.T3.rZ)]
 setnames(dt.pt.specific[['lincRNA']],"Placenta.T3.rZ","Placenta")
-dt.pt.specific[['lincRNA']]
+dt.pt.specific[['lincRNA']] # n=74
 
 mat.top.pt.b<-as.matrix(log10(dt.pt.specific[['lincRNA']][Placenta>10,5:54]+0.001)) # n=26
 rownames(mat.top.pt.b)<-dt.pt.specific[['lincRNA']][Placenta>10]$hgnc_symbol
