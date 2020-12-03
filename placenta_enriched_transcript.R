@@ -38,7 +38,9 @@ dt.tpm.tau[Placenta.T3.rZ>1 & Tau.rZ>0.99 & Placenta.T3.rZ/GTEx_meanTPM>100,.N,g
 # Find tissue-enriched transcripts #
 ####################################
 my.RData<-file.path('RData',paste0(my.gtex.ver,'.li.enriched.RData'))
-if(!file.exists(my.RData)){
+if(file.exists(my.RData)){
+    load(my.RData) # load li.enriched
+else{
     li.enriched<-list()
     for(my.tissue in colnames(mat.tpm)){
         if(my.tissue=="Placenta.T3.pA"){
@@ -100,9 +102,9 @@ dt.erv<-merge(
     )[order(gene_biotype,-Placenta.T3.rZ)]
 fwrite(dt.erv,file=file.path('data/Tissue-specific/ERV.tpm.csv'))
 
-##
-## NO. of tissue-enriched genes
-##
+######################################################
+## Chi-sq test for the NO. of tissue-enriched genes ##
+######################################################
 print(foo1<-rbindlist(li.enriched)[Which_Tissue!="Placenta.T3.pA",.N,.(Which_Tissue,gene_biotype)][,.(total=sum(N)),gene_biotype])
 
 print(foo2<-rbindlist(li.enriched)[Which_Tissue!="Placenta.T3.pA",.(`observed`=.N),.(Which_Tissue,gene_biotype)] )
@@ -113,22 +115,33 @@ print(bar<-merge(
     )[,.(observed,expected=total/N,ratio=observed/(total/N)),.(gene_biotype,Which_Tissue)]
 )
 
-x<-bar[gene_biotype=="protein_coding"]$observed
-names(x)<-bar[gene_biotype=="protein_coding"]$Which_Tissue
-print(y<-chisq.test(x))
-
+# protein-coding
 x<-bar[gene_biotype=="protein_coding"]$observed
 names(x)<-bar[gene_biotype=="protein_coding"]$Which_Tissue
 print(y<-chisq.test(x))
 
 names(y)
-y$observed
-y$expected
+data.frame(y$observed,y$expected,y$observed/y$expected)
 y$p.value
 y$statistic
 y$parameter
 y$method
 
+options(scipen=0)
+formatC(y$p.value, format = "e", digits = 2)
+
+# lincRNA
+x<-bar[gene_biotype=="lincRNA"]$observed
+names(x)<-bar[gene_biotype=="lincRNA"]$Which_Tissue
+print(y<-chisq.test(x,rescale.p=T))
+
+data.frame(y$observed,y$expected,y$observed/y$expected)
+y$p.value
+y$statistic
+y$parameter
+y$method
+
+# via lapply
 lapply(split(bar, bar$gene_biotype), function(i){
         i[,.(Which_Tissue,observed,expected)]
         x<-i$observed
