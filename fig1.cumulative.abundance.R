@@ -145,7 +145,7 @@ p.a<-ggplot(dt.abundance.summary[`RNA Type`!="pre-miRNA"], aes(fpkm.cutoff+0.000
                         breaks = trans_breaks("log10", function(x) 10^x),
                         labels = trans_format("log10", math_format(10^.x))) +
     scale_color_manual(values=cbPalette2) +
-    xlab("Maximum abundance level (FPKM)") + 
+    xlab("Maximum abundance level (RPKM)") + 
     ylab("Percentage of transcripts (%)") + 
     theme_Publication() +
     theme(legend.position=c(0.8,0.25), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7)))
@@ -156,7 +156,7 @@ p.b<-ggplot(dt.abundance[`RNA Type`!="pre-miRNA"], aes(meanFpkm+0.0001)) +
                         breaks = trans_breaks("log10", function(x) 10^x),
                         labels = trans_format("log10", math_format(10^.x))) +
     scale_color_manual(name="RNA types", values=cbPalette2) +
-    xlab("Abundance level (FPKM)") + 
+    xlab("Abundance level (RPKM)") + 
     ylab("Density") + 
     theme_Publication() +
     theme(legend.position="none") 
@@ -251,7 +251,7 @@ if(my.gtex.ver=="v8.p2"){
 # A4: 8.27 × 11.69 inches   #
 # combine all figures above #
 #############################
-file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.rev1.tiff")
+file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.rev2.tiff")
 cp.all.pie<-cowplot::plot_grid(p.pie.total, p.pie.small, labels="auto",label_size=25,nrow=1)
 cp.all.top<-cowplot::plot_grid(p.a, p.b, p.c, labels=c("c","d","e"), label_size=25, align="h", nrow=1)
 cp.all.bottom<-cowplot::plot_grid(p.d, p.f, labels=c("f","g"),rel_widths=c(1.2,1), label_size=25, align="h", nrow=1)
