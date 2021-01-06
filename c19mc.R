@@ -1,4 +1,4 @@
-
+source("lib/local.R")
 load("RData/dl.deseq.RData") # 12M (dl.deseq.anno, dl.abundance, dl.cum.fpkm)
 load("RData/dl.manhattan.RData") # loads dl.manhattan (for miRNA, piRNA, circRNA and sncRNA)
 load("RData/dt.ensg.RData") 
@@ -70,8 +70,8 @@ p1<-ggplot(dt.mir.target, aes(meanFpkm.x,meanFpkm.y)) +
                         labels = trans_format("log10", math_format(10^.x))) +
     annotate("text",x=10^5.8,y=10^2,label="Pearson=-0.5\n(P=0.002)",size=5) +
     #annotate("rect",xmin=10^5.5,xmax=10^6,ymin=10^1.7,ymax=10^2.5,alpha=.2) +
-    xlab("Expression level of miRNA (FPKM)") +
-    ylab("Expression level of mRNA (FPKM)") +
+    xlab("Expression level of miRNA (RPKM)") +
+    ylab("Expression level of mRNA (RPKM)") +
     theme_Publication()
 print(p1)
 
@@ -99,6 +99,10 @@ fwrite(foo,file="c19mc.miRNAs.target.miRTarBase.csv")
 ##
 ## GO
 if(TRUE){
+	library(goseq) # for goseq
+	library(GO.db) # for GOBPPARENTS
+	library(GOstats) # for GOGraph
+
     dt.gP<-fread("data/gProfiler_hsapiens_03-11-2020_15-21-45__intersections.csv")
     dt.gP[,.N,source]
     dt.gP.go<-dt.gP[grepl("GO:",source)]
