@@ -1,0 +1,14 @@
+##gff-version 2
+##source-version rtracklayer 1.38.2
+##date 2018-06-29
+7	.	mRNA	128241284	128257628	.	+	.	ID "mRNA1"; Name "TCONS_00323031";
+7	.	mRNA	128241213	128257629	.	+	.	ID "mRNA2"; Name "TCONS_00329506";
+7	.	mRNA	128241246	128257669	.	+	.	ID "mRNA3"; Name "TCONS_00330483";
+7	StringTie	exon	128241284	128241306	.	+	.	ID "exon1"; gene_id "XLOC_075741"; transcript_id "TCONS_00323031"; exon_number 1; gene_name "LEP"; oId "SLX-10283.D711_D501.STRG.25563.1"; nearest_ref "ENST00000308868"; class_code "="; tss_id "TSS178387"; p_id "P58771"; Parent "mRNA1"
+7	StringTie	exon	128251991	128252162	.	+	.	ID "exon2"; gene_id "XLOC_075741"; transcript_id "TCONS_00323031"; exon_number 2; gene_name "LEP"; oId "SLX-10283.D711_D501.STRG.25563.1"; nearest_ref "ENST00000308868"; class_code "="; tss_id "TSS178387"; p_id "P58771"; Parent "mRNA1"
+7	StringTie	exon	128254404	128257628	.	+	.	ID "exon3"; gene_id "XLOC_075741"; transcript_id "TCONS_00323031"; exon_number 3; gene_name "LEP"; oId "SLX-10283.D711_D501.STRG.25563.1"; nearest_ref "ENST00000308868"; class_code "="; tss_id "TSS178387"; p_id "P58771"; Parent "mRNA1"
+7	StringTie	exon	128241213	128241306	.	+	.	ID "exon4"; gene_id "XLOC_075741"; transcript_id "TCONS_00329506"; exon_number 1; gene_name "LEP"; oId "SLX-10284.D702_D503.STRG.23021.4"; nearest_ref "ENST00000308868"; class_code "j"; tss_id "TSS178387"; Parent "mRNA2"
+7	StringTie	exon	128251991	128252162	.	+	.	ID "exon5"; gene_id "XLOC_075741"; transcript_id "TCONS_00329506"; exon_number 2; gene_name "LEP"; oId "SLX-10284.D702_D503.STRG.23021.4"; nearest_ref "ENST00000308868"; class_code "j"; tss_id "TSS178387"; Parent "mRNA2"
+7	StringTie	exon	128254407	128257629	.	+	.	ID "exon6"; gene_id "XLOC_075741"; transcript_id "TCONS_00329506"; exon_number 3; gene_name "LEP"; oId "SLX-10284.D702_D503.STRG.23021.4"; nearest_ref "ENST00000308868"; class_code "j"; tss_id "TSS178387"; Parent "mRNA2"
+7	StringTie	exon	128241246	128252162	.	+	.	ID "exon7"; gene_id "XLOC_075741"; transcript_id "TCONS_00330483"; exon_number 1; gene_name "LEP"; oId "SLX-10402.D705_D507.STRG.23845.3"; nearest_ref "ENST00000308868"; class_code "j"; tss_id "TSS178387"; Parent "mRNA3"
+7	StringTie	exon	128254407	128257669	.	+	.	ID "exon8"; gene_id "XLOC_075741"; transcript_id "TCONS_00330483"; exon_number 2; gene_name "LEP"; oId "SLX-10402.D705_D507.STRG.23845.3"; nearest_ref "ENST00000308868"; class_code "j"; tss_id "TSS178387"; Parent "mRNA3"

@@ -94,7 +94,7 @@ foo<-merge(
     dt.target.desc
     ,by.x="Target Gene",by.y="hgnc_symbol"
     )[,.(miRNA,`Target Gene`,ensembl_gene_id,description,FPKM_miRNA,FPKM_target,`miRTarBase ID`,Experiments,`References (PMID)`)]
-fwrite(foo,file="c19mc.miRNAs.target.miRTarBase.csv")
+fwrite(foo,file="data/c19mc.miRNAs.target.miRTarBase.csv")
 
 ##
 ## GO

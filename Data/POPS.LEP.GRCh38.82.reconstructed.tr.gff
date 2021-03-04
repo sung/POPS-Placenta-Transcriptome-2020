@@ -1,0 +1,14 @@
+##gff-version 1
+##source-version rtracklayer 1.38.2
+##date 2018-06-29
+7	.	mRNA	128241284	128257628	.	+	.	7
+7	.	mRNA	128241213	128257629	.	+	.	7
+7	.	mRNA	128241246	128257669	.	+	.	7
+7	StringTie	exon	128241284	128241306	.	+	.	7
+7	StringTie	exon	128251991	128252162	.	+	.	7
+7	StringTie	exon	128254404	128257628	.	+	.	7
+7	StringTie	exon	128241213	128241306	.	+	.	7
+7	StringTie	exon	128251991	128252162	.	+	.	7
+7	StringTie	exon	128254407	128257629	.	+	.	7
+7	StringTie	exon	128241246	128252162	.	+	.	7
+7	StringTie	exon	128254407	128257669	.	+	.	7

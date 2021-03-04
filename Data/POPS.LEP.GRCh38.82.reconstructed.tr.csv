@@ -1,0 +1,4 @@
+class_code,tcon,xloc,hgnc_symbol,ensembl_transcript_id,fpkm.iqr,cov.iqr,len.iqr,exon.cnt,evi.ratio,transcript_biotype,class,desc
+=,TCONS_00323031,XLOC_075741,LEP,ENST00000308868,6.61361671641791,75.6072679104478,3420,3,0.908474576271186,protein_coding,Known,Complete match
+j,TCONS_00329506,XLOC_075741,LEP,ENST00000308868,2.55138142857143,29.7299333333333,3421.61904761905,3,0.138983050847458,protein_coding,Novel,Potentially novel isoform
+j,TCONS_00330483,XLOC_075741,LEP,ENST00000308868,1.814016,20.9491666666667,7932.2,2,0.105084745762712,protein_coding,Novel,Potentially novel isoform
