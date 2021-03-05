@@ -221,18 +221,22 @@ p.chr1<-p.man.chr1@ggplot +
 ###########################
 # combine A,B,C,D,E above #
 ###########################
-file.name<-file.path("Figures/Fig2.manhattan.rev1.tiff")
-tiff(filename=file.name,width=10, height=15,units="in",res=300, compression = 'lzw')
-cowplot::plot_grid(p.all, p.chr19, p.chrMT, p.chr14, p.chr1, 
-                   labels="auto",label_size=20,ncol=1, align="v", 
-                   rel_heights=c(3.3,1,1,1.7,1.1))
-dev.off()
+if(FALSE){
+    file.name<-file.path("Figures/Fig2.manhattan.rev1.tiff")
+    tiff(filename=file.name,width=10, height=15,units="in",res=300, compression = 'lzw')
+    cowplot::plot_grid(p.all, p.chr19, p.chrMT, p.chr14, p.chr1, 
+                    labels="auto",label_size=20,ncol=1, align="v", 
+                    rel_heights=c(3.3,1,1,1.7,1.1))
+    dev.off()
+}
 
 ###################
 ## C19MC & C14MC ##
 ###################
-file.name<-file.path("Figures/Fig2.manhattan.rev1.mc.tiff")
-tiff(filename=file.name,width=10, height=14,units="in",res=300, compression = 'lzw')
+#file.name<-file.path("Figures/Fig2.manhattan.rev1.mc.tiff")
+#tiff(filename=file.name,width=10, height=14,units="in",res=300, compression = 'lzw')
+file.name<-file.path("Figures/Fig2.manhattan.rev2.mc.pdf")
+pdf(file=file.name, width=10, height=14, title="Fig2 - Manhattan plot of transcript abundance") #
 cowplot::plot_grid(p.all, p.c19mc, p.c14mc, p.chrMT,
                    labels="auto",label_size=20,ncol=1, align="v", 
                    rel_heights=c(3.5,1,3,1))

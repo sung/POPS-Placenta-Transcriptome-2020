@@ -233,7 +233,7 @@ if(my.gtex.ver=="v8.p2"){
         xlab("Percentage of protein coding transcripts (%)") + 
         ylab("Sum of transcript abundance (%)") +
         theme_Publication() +
-        theme(legend.position=c(0.84,0.22), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7))) +
+        theme(legend.position=c(0.82,0.24), legend.title = element_text(size=rel(1.2)), legend.text = element_text(size = rel(1.1)), legend.background=element_rect(fill=alpha("white",0.7))) +
         scale_color_manual(values=c(ggsci::pal_nejm()(6),"black","darkgrey","#FFDC91FF", "#cc8b00"))
 
     dt.foo<-dt.cum.fpkm.gtex[INDEX_PCT<1,.(.N,max(cumsum.fpkm), max(cumsum.fpkm.pct)),.(Tissue,Source)][order(-V3)]
@@ -251,11 +251,13 @@ if(my.gtex.ver=="v8.p2"){
 # A4: 8.27 × 11.69 inches   #
 # combine all figures above #
 #############################
-file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.rev2.tiff")
 cp.all.pie<-cowplot::plot_grid(p.pie.total, p.pie.small, labels="auto",label_size=25,nrow=1)
 cp.all.top<-cowplot::plot_grid(p.a, p.b, p.c, labels=c("c","d","e"), label_size=25, align="h", nrow=1)
-cp.all.bottom<-cowplot::plot_grid(p.d, p.f, labels=c("f","g"),rel_widths=c(1.2,1), label_size=25, align="h", nrow=1)
+cp.all.bottom<-cowplot::plot_grid(p.d, p.f, labels=c("f","g"),rel_widths=c(1.2,1.1), label_size=25, align="h", nrow=1)
 cp.all<-cowplot::plot_grid(cp.all.pie, cp.all.top, cp.all.bottom, rel_heights=c(1.1,1,1.4),nrow=3)
-tiff(file.name, width=16, height=21,units="in",res=300, compression = 'lzw') #A4 size
+#file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.rev2.tiff")
+#tiff(file.name, width=16, height=21,units="in",res=300, compression = 'lzw') #A4 size
+file.name<-file.path("Figures/Fig1.transcript.pie.abundance.complexity.rev2.pdf")
+pdf(file=file.name, width=16.1, height=21, title="Fig1 - transcriptome abundance") #
 print(cp.all)
 dev.off()
